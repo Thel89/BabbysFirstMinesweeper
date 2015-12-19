@@ -13,7 +13,9 @@ namespace Minesweeper
         private int column;
         private MinesweeperState gameState;
 
-        public enum states {Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb};
+        public enum States { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
+
+        public enum Visibility { Hidden, Exposed };
 
         public MinesweeperButton(int c, int r, MinesweeperState minesweeperState)
         {

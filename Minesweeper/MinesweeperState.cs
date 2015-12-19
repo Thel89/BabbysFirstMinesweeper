@@ -12,9 +12,13 @@ namespace Minesweeper
         private int columnCount;
         private TableLayoutPanel gamePanel;
         private int rowCount;
+        private int gameState;
+
+        public enum GameStates : int { NotStarted, InProgress, Won, Lost };
 
         public MinesweeperState(TableLayoutPanel gamePanel, int rowCount, int columnCount)
         {
+            gameState = (int)GameStates.NotStarted;
             this.gamePanel = gamePanel;
             this.rowCount = rowCount;
             this.columnCount = columnCount;
@@ -50,7 +54,21 @@ namespace Minesweeper
 
         internal void GameButtonClick(int row, int column)
         {
-            throw new NotImplementedException();
+            switch (gameState)
+            {
+                case (int)GameStates.NotStarted:
+                    GenerateBombs(row, column); // we pass through where we clicked so people don't click a bomb and instantly lose
+                    gameState = (int)GameStates.InProgress;
+                    goto case (int)GameStates.InProgress; // I feel horrible for doing this
+                case (int)GameStates.InProgress:
+
+                    break;
+            }
+        }
+
+        internal void GenerateBombs(int row, int column)
+        {
+
         }
     }
 }
