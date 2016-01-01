@@ -33,13 +33,15 @@
             this.rowsLabel = new System.Windows.Forms.Label();
             this.columnsLabel = new System.Windows.Forms.Label();
             this.columnsEntry = new System.Windows.Forms.TextBox();
+            this.bombsEntry = new System.Windows.Forms.TextBox();
+            this.bombsLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(251, 10);
+            this.startButton.Location = new System.Drawing.Point(282, 10);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(75, 23);
+            this.startButton.Size = new System.Drawing.Size(69, 23);
             this.startButton.TabIndex = 0;
             this.startButton.Text = "Start!";
             this.startButton.UseVisualStyleBackColor = true;
@@ -65,7 +67,7 @@
             // columnsLabel
             // 
             this.columnsLabel.AutoSize = true;
-            this.columnsLabel.Location = new System.Drawing.Point(115, 14);
+            this.columnsLabel.Location = new System.Drawing.Point(92, 15);
             this.columnsLabel.Name = "columnsLabel";
             this.columnsLabel.Size = new System.Drawing.Size(47, 13);
             this.columnsLabel.TabIndex = 4;
@@ -73,17 +75,36 @@
             // 
             // columnsEntry
             // 
-            this.columnsEntry.Location = new System.Drawing.Point(169, 12);
+            this.columnsEntry.Location = new System.Drawing.Point(145, 12);
             this.columnsEntry.Name = "columnsEntry";
             this.columnsEntry.Size = new System.Drawing.Size(40, 20);
             this.columnsEntry.TabIndex = 5;
             this.columnsEntry.Text = "20";
             // 
+            // bombsEntry
+            // 
+            this.bombsEntry.Location = new System.Drawing.Point(236, 12);
+            this.bombsEntry.Name = "bombsEntry";
+            this.bombsEntry.Size = new System.Drawing.Size(40, 20);
+            this.bombsEntry.TabIndex = 7;
+            this.bombsEntry.Text = "20";
+            // 
+            // bombsLabel
+            // 
+            this.bombsLabel.AutoSize = true;
+            this.bombsLabel.Location = new System.Drawing.Point(191, 15);
+            this.bombsLabel.Name = "bombsLabel";
+            this.bombsLabel.Size = new System.Drawing.Size(39, 13);
+            this.bombsLabel.TabIndex = 6;
+            this.bombsLabel.Text = "Bombs";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(342, 233);
+            this.ClientSize = new System.Drawing.Size(363, 233);
+            this.Controls.Add(this.bombsEntry);
+            this.Controls.Add(this.bombsLabel);
             this.Controls.Add(this.columnsEntry);
             this.Controls.Add(this.columnsLabel);
             this.Controls.Add(this.rowsLabel);
@@ -103,6 +124,8 @@
         private System.Windows.Forms.Label rowsLabel;
         private System.Windows.Forms.Label columnsLabel;
         private System.Windows.Forms.TextBox columnsEntry;
+        private System.Windows.Forms.TextBox bombsEntry;
+        private System.Windows.Forms.Label bombsLabel;
     }
 }
 

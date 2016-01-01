@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Minesweeper
@@ -26,6 +20,7 @@ namespace Minesweeper
         {
             int rowCount = int.Parse(rowsEntry.Text);
             int columnCount = int.Parse(columnsEntry.Text);
+            int bombCount = int.Parse(bombsEntry.Text);
 
             SuspendLayout();
 
@@ -36,7 +31,7 @@ namespace Minesweeper
             }
             gamePanel = new TableLayoutPanel();
 
-            gameState = new MinesweeperState(gamePanel, rowCount, columnCount);
+            gameState = new MinesweeperState(gamePanel, rowCount, columnCount, bombCount);
 
 
             Controls.Add(gamePanel);

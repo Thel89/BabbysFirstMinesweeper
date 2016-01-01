@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Minesweeper
 {
     class MinesweeperButton : Button
     {
-        private int row;
-        private int column;
+        internal int row;
+        internal int column;
         private MinesweeperState gameState;
 
         public enum States { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
