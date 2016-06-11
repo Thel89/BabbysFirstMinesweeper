@@ -178,20 +178,37 @@ namespace Minesweeper
         private void ExposeAdjacentCells(MinesweeperButton button, int row, int column)
         {
             List<MinesweeperButton> neighbours = new List<MinesweeperButton>();
-            if (row > 0) {
+            if (row > 0 && column > 0)
+            {
+                neighbours.Add(gameField[row - 1, column - 1]);
+            }
+            if (row > 0)
+            {
                 neighbours.Add(gameField[row - 1, column]);
+            }
+            if (row > 0 && column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row - 1, column + 1]);
+            }
+            if (column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row, column + 1]);
+            }
+            if (row < (rowCount - 1) && column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row + 1, column + 1]);
             }
             if (row < (rowCount - 1))
             {
                 neighbours.Add(gameField[row + 1, column]);
             }
+            if (row < (rowCount - 1) && column > 0)
+            {
+                neighbours.Add(gameField[row + 1, column-1]);
+            }
             if (column > 0)
             {
                 neighbours.Add(gameField[row, column - 1]);
-            }
-            if (column < (columnCount - 1))
-            {
-                neighbours.Add(gameField[row, column + 1]);
             }
             foreach(MinesweeperButton b in neighbours)
             {
