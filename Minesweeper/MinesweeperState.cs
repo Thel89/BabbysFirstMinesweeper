@@ -243,7 +243,26 @@ namespace Minesweeper
 
         internal void RightButtonClick(int row, int column)
         {
-            //todo: handle 'flagged' plus 'maybe'. Will have to rethink all the things
+            MinesweeperButton button = gameField[row, column];
+            if (button.Enabled)
+            {
+                switch (button.FlagState)
+                {
+                    case MinesweeperButton.FlagStates.Unmarked:
+                        button.FlagState = MinesweeperButton.FlagStates.Flagged;
+                        button.Text = "#";
+                        break;
+                    case MinesweeperButton.FlagStates.Flagged:
+                        button.FlagState = MinesweeperButton.FlagStates.Maybe;
+                        button.Text = "?";
+                        break;
+                    case MinesweeperButton.FlagStates.Maybe:
+                        button.FlagState = MinesweeperButton.FlagStates.Unmarked;
+                        button.Text = "";
+                        break;
+
+                }
+            }
         }
         internal void TwoButtonClick(int row, int column)
         {

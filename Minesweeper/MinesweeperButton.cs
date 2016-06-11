@@ -6,12 +6,13 @@ namespace Minesweeper
     class MinesweeperButton : Button
     {
         public enum BombStates { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
-        public enum FlagStates { Unmarked, Maybe, Flagged };
+        public enum FlagStates { Unmarked, Flagged, Maybe };
         public enum Visibility { Hidden, Exposed };
 
         private int row;
         private int column;
         private BombStates bombState;
+        private FlagStates flagState;
         private MinesweeperState gameState;
 
         public BombStates BombState
@@ -55,6 +56,19 @@ namespace Minesweeper
             set
             {
                 column = value;
+            }
+        }
+
+        internal FlagStates FlagState
+        {
+            get
+            {
+                return flagState;
+            }
+
+            set
+            {
+                flagState = value;
             }
         }
 
