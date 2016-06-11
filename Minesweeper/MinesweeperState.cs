@@ -271,7 +271,6 @@ namespace Minesweeper
         }
         internal void TwoButtonClick(int row, int column)
         {
-            MessageBox.Show("test!");
             List<MinesweeperButton> neighbours = new List<MinesweeperButton>();
             if (row > 0 && column > 0)
             {
