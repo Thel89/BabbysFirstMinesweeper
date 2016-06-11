@@ -148,13 +148,35 @@ namespace Minesweeper
                     }
                     goto case (int)GameStates.InProgress; // I feel horrible for doing this
                 case (int)GameStates.InProgress:
-                    ExposeCell(gameField[row, column], row, column);
+                    ExposeCell(gameField[row, column]);
+                    CheckIfWon();
                     break;
             }
 
         }
 
-        private void ExposeCell(MinesweeperButton button, int row, int column)
+        private void CheckIfWon()
+        {
+            int count = 0;
+            for(int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < columnCount; j++)
+                {
+                    if (gameField[i, j].Enabled)
+                    {
+                        count++;
+                    }
+                }
+            }
+            if(count == bombCount)
+            {
+                MessageBox.Show("You win!");
+                gameState = (int)GameStates.Won;
+                //todo: stats and shit
+            }
+        }
+
+        private void ExposeCell(MinesweeperButton button)
         {
             if (button.BombState == MinesweeperButton.BombStates.Bomb && !isDebug)
             {
@@ -169,7 +191,7 @@ namespace Minesweeper
                 updateLabel(button);
                 if (button.BombState == MinesweeperButton.BombStates.Empty)
                 {
-                    ExposeAdjacentCells(button, row, column);
+                    ExposeAdjacentCells(button, button.Row, button.Column);
                 }
             }
             debugCheckBox.Focus();
@@ -214,7 +236,7 @@ namespace Minesweeper
             {
                 if (b.Enabled)
                 {
-                    ExposeCell(b, b.Row, b.Column);
+                    ExposeCell(b);
                 }
             }
         }
