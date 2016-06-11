@@ -29,7 +29,7 @@ namespace Minesweeper
                 gamePanel.Dispose();
             }
             gamePanel = new TableLayoutPanel();
-            gameState = new MinesweeperState(gamePanel, rowCount, columnCount, bombCount, debugCheckBox.Checked);
+            gameState = new MinesweeperState(gamePanel, rowCount, columnCount, bombCount, debugCheckBox);
 
 
             Controls.Add(gamePanel);

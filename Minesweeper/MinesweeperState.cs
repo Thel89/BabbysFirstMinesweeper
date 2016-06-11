@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Minesweeper
 {
@@ -11,17 +12,19 @@ namespace Minesweeper
         private MinesweeperButton[,] gameField;
         private bool left_down, right_down, both_click;
         private bool isDebug;
+        private CheckBox debugCheckBox;
 
         public enum GameStates : int { NotStarted, InProgress, Won, Lost };
 
-        public MinesweeperState(TableLayoutPanel gamePanel, int rowCount, int columnCount, int bombCount, bool isDebug)
+        public MinesweeperState(TableLayoutPanel gamePanel, int rowCount, int columnCount, int bombCount, CheckBox debug)
         {
             gameState = (int)GameStates.NotStarted;
             this.gamePanel = gamePanel;
             this.rowCount = rowCount;
             this.columnCount = columnCount;
             this.bombCount = bombCount;
-            this.isDebug = isDebug;
+            this.isDebug = debug.Checked;
+            this.debugCheckBox = debug;
 
             gamePanel.ColumnCount = columnCount;
             for (int i = 0; i < columnCount; i++)
@@ -141,33 +144,64 @@ namespace Minesweeper
                     GenerateBombs(row, column); // we pass through where we clicked so people don't click a bomb and instantly lose
                     UpdateProximityCounts();
                     if (isDebug) {
-                        UpdateLabels();
+                        UpdateAllLabels();
                     }
                     goto case (int)GameStates.InProgress; // I feel horrible for doing this
                 case (int)GameStates.InProgress:
-                    
-                    if (gameField[row, column].BombState == MinesweeperButton.BombStates.Bomb)
-                    {
-                        MessageBox.Show("You lose");
-                        gameState = (int)GameStates.Lost;
-                        //todo: stats and shit
-                        //todo: expose all mines
-                    }
-                    else
-                    {
-                        foreach (MinesweeperButton mb in gamePanel.Controls)
-                        {
-
-                        }
-                        if (gameField[row, column].BombState == MinesweeperButton.BombStates.Empty)
-                        {
-
-                        }
-                    }
+                    ExposeCell(gameField[row, column], row, column);
                     break;
             }
 
         }
+
+        private void ExposeCell(MinesweeperButton button, int row, int column)
+        {
+            if (button.BombState == MinesweeperButton.BombStates.Bomb && !isDebug)
+            {
+                MessageBox.Show("You lose");
+                gameState = (int)GameStates.Lost;
+                //todo: stats and shit
+                //todo: expose all mines
+            }
+            else
+            {
+                button.Enabled = false;
+                updateLabel(button);
+                if (button.BombState == MinesweeperButton.BombStates.Empty)
+                {
+                    ExposeAdjacentCells(button, row, column);
+                }
+            }
+            debugCheckBox.Focus();
+        }
+
+        private void ExposeAdjacentCells(MinesweeperButton button, int row, int column)
+        {
+            List<MinesweeperButton> neighbours = new List<MinesweeperButton>();
+            if (row > 0) {
+                neighbours.Add(gameField[row - 1, column]);
+            }
+            if (row < (rowCount - 1))
+            {
+                neighbours.Add(gameField[row + 1, column]);
+            }
+            if (column > 0)
+            {
+                neighbours.Add(gameField[row, column - 1]);
+            }
+            if (column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row, column + 1]);
+            }
+            foreach(MinesweeperButton b in neighbours)
+            {
+                if (b.Enabled)
+                {
+                    ExposeCell(b, b.Row, b.Column);
+                }
+            }
+        }
+
         internal void RightButtonClick(int row, int column)
         {
             //todo: handle 'flagged' plus 'maybe'. Will have to rethink all the things
@@ -177,45 +211,49 @@ namespace Minesweeper
 
         }
 
-        private void UpdateLabels()
+        private void updateLabel(MinesweeperButton button)
+        {
+            switch (button.BombState)
+            {
+                case MinesweeperButton.BombStates.Empty:
+                    button.Text = "";
+                    break;
+                case MinesweeperButton.BombStates.One:
+                    button.Text = "1";
+                    break;
+                case MinesweeperButton.BombStates.Two:
+                    button.Text = "2";
+                    break;
+                case MinesweeperButton.BombStates.Three:
+                    button.Text = "3";
+                    break;
+                case MinesweeperButton.BombStates.Four:
+                    button.Text = "4";
+                    break;
+                case MinesweeperButton.BombStates.Five:
+                    button.Text = "5";
+                    break;
+                case MinesweeperButton.BombStates.Six:
+                    button.Text = "6";
+                    break;
+                case MinesweeperButton.BombStates.Seven:
+                    button.Text = "7";
+                    break;
+                case MinesweeperButton.BombStates.Eight:
+                    button.Text = "8";
+                    break;
+                case MinesweeperButton.BombStates.Bomb:
+                    button.Text = "*";
+                    break;
+            }
+            button.Refresh();
+        }
+
+        private void UpdateAllLabels()
         {
             foreach(MinesweeperButton mb in gamePanel.Controls)
             {
-                MinesweeperButton.BombStates state = gameField[mb.row, mb.column].BombState;
-                switch (state)
-                {
-                    case MinesweeperButton.BombStates.Empty:
-                        mb.Text = "";
-                        break;
-                    case MinesweeperButton.BombStates.One:
-                        mb.Text = "1";
-                        break;
-                    case MinesweeperButton.BombStates.Two:
-                        mb.Text = "2";
-                        break;
-                    case MinesweeperButton.BombStates.Three:
-                        mb.Text = "3";
-                        break;
-                    case MinesweeperButton.BombStates.Four:
-                        mb.Text = "4";
-                        break;
-                    case MinesweeperButton.BombStates.Five:
-                        mb.Text = "5";
-                        break;
-                    case MinesweeperButton.BombStates.Six:
-                        mb.Text = "6";
-                        break;
-                    case MinesweeperButton.BombStates.Seven:
-                        mb.Text = "7";
-                        break;
-                    case MinesweeperButton.BombStates.Eight:
-                        mb.Text = "8";
-                        break;
-                    case MinesweeperButton.BombStates.Bomb:
-                        mb.Text = "*";
-                        break;
-                }
-                mb.Refresh();
+                updateLabel(mb);
             }
         }
 

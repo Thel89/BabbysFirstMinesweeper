@@ -9,8 +9,8 @@ namespace Minesweeper
         public enum FlagStates { Unmarked, Maybe, Flagged };
         public enum Visibility { Hidden, Exposed };
 
-        internal int row;
-        internal int column;
+        private int row;
+        private int column;
         private BombStates bombState;
         private MinesweeperState gameState;
 
@@ -32,32 +32,58 @@ namespace Minesweeper
             }
         }
 
-        public MinesweeperButton(int c, int r, MinesweeperState minesweeperState)
+        internal int Row
         {
-            column = c;
-            row = r;
+            get
+            {
+                return row;
+            }
+
+            set
+            {
+                row = value;
+            }
+        }
+
+        internal int Column
+        {
+            get
+            {
+                return column;
+            }
+
+            set
+            {
+                column = value;
+            }
+        }
+
+        public MinesweeperButton(int r, int c, MinesweeperState minesweeperState)
+        {
+            Column = c;
+            Row = r;
             gameState = minesweeperState;
             Padding = new Padding(0);
             Margin = new Padding(0);
             MouseDown += new MouseEventHandler(mineSweeperButton_MouseDown);
             MouseUp += new MouseEventHandler(mineSweeperButton_MouseUp);
             MouseLeave += new EventHandler(mineSweeperButton_MouseLeave);
-
+            this.FlatStyle = FlatStyle.System;
         }
 
         private void mineSweeperButton_MouseDown(object sender, MouseEventArgs e)
         {
-            ((MinesweeperButton)sender).gameState.GameButton_MouseDown(row, column, e);
+            ((MinesweeperButton)sender).gameState.GameButton_MouseDown(Row, Column, e);
         }
 
         private void mineSweeperButton_MouseUp(object sender, MouseEventArgs e)
         {
-            ((MinesweeperButton)sender).gameState.GameButton_MouseUp(row, column, e);
+            ((MinesweeperButton)sender).gameState.GameButton_MouseUp(Row, Column, e);
         }
 
         private void mineSweeperButton_MouseLeave(object sender, EventArgs e)
         {
-            ((MinesweeperButton)sender).gameState.GameButton_MouseLeave(row, column, e);
+            ((MinesweeperButton)sender).gameState.GameButton_MouseLeave(Row, Column, e);
         }
     }
 }
