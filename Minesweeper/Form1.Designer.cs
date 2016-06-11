@@ -35,6 +35,7 @@
             this.columnsEntry = new System.Windows.Forms.TextBox();
             this.bombsEntry = new System.Windows.Forms.TextBox();
             this.bombsLabel = new System.Windows.Forms.Label();
+            this.debugCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // startButton
@@ -98,11 +99,22 @@
             this.bombsLabel.TabIndex = 6;
             this.bombsLabel.Text = "Bombs";
             // 
+            // debugCheckBox
+            // 
+            this.debugCheckBox.AutoSize = true;
+            this.debugCheckBox.Location = new System.Drawing.Point(358, 13);
+            this.debugCheckBox.Name = "debugCheckBox";
+            this.debugCheckBox.Size = new System.Drawing.Size(64, 17);
+            this.debugCheckBox.TabIndex = 8;
+            this.debugCheckBox.Text = "Debug?";
+            this.debugCheckBox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 233);
+            this.ClientSize = new System.Drawing.Size(426, 233);
+            this.Controls.Add(this.debugCheckBox);
             this.Controls.Add(this.bombsEntry);
             this.Controls.Add(this.bombsLabel);
             this.Controls.Add(this.columnsEntry);
@@ -126,6 +138,7 @@
         private System.Windows.Forms.TextBox columnsEntry;
         private System.Windows.Forms.TextBox bombsEntry;
         private System.Windows.Forms.Label bombsLabel;
+        private System.Windows.Forms.CheckBox debugCheckBox;
     }
 }
 
