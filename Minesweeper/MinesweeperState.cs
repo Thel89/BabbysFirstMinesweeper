@@ -8,7 +8,7 @@ namespace Minesweeper
     {
         private int columnCount, rowCount, bombCount, gameState;
         private TableLayoutPanel gamePanel;
-        private int[,] gameField;
+        private MinesweeperButton[,] gameField;
         private bool left_down, right_down, both_click;
         private bool isDebug;
 
@@ -38,11 +38,14 @@ namespace Minesweeper
             gamePanel.Size = new System.Drawing.Size(20 * columnCount, 20 * rowCount);
             gamePanel.TabIndex = 1;
 
+            gameField = new MinesweeperButton[rowCount, columnCount];
+
             for (int i = 0; i < gamePanel.ColumnCount; i++)
             {
                 for (int j = 0; j < gamePanel.RowCount; j++)
                 {
                     MinesweeperButton b = new MinesweeperButton(i, j, this);
+                    gameField[i, j] = b;
                     gamePanel.Controls.Add(b, i, j);
                 }
             }
@@ -143,7 +146,7 @@ namespace Minesweeper
                     goto case (int)GameStates.InProgress; // I feel horrible for doing this
                 case (int)GameStates.InProgress:
                     
-                    if (gameField[row, column] == (int)MinesweeperButton.BombState.Bomb)
+                    if (gameField[row, column].BombState == MinesweeperButton.BombStates.Bomb)
                     {
                         MessageBox.Show("You lose");
                         gameState = (int)GameStates.Lost;
@@ -156,7 +159,7 @@ namespace Minesweeper
                         {
 
                         }
-                        if (gameField[row, column] == (int)MinesweeperButton.BombState.Empty)
+                        if (gameField[row, column].BombState == MinesweeperButton.BombStates.Empty)
                         {
 
                         }
@@ -178,37 +181,37 @@ namespace Minesweeper
         {
             foreach(MinesweeperButton mb in gamePanel.Controls)
             {
-                int state = gameField[mb.row, mb.column];
+                MinesweeperButton.BombStates state = gameField[mb.row, mb.column].BombState;
                 switch (state)
                 {
-                    case (int)MinesweeperButton.BombState.Empty:
+                    case MinesweeperButton.BombStates.Empty:
                         mb.Text = "";
                         break;
-                    case (int)MinesweeperButton.BombState.One:
+                    case MinesweeperButton.BombStates.One:
                         mb.Text = "1";
                         break;
-                    case (int)MinesweeperButton.BombState.Two:
+                    case MinesweeperButton.BombStates.Two:
                         mb.Text = "2";
                         break;
-                    case (int)MinesweeperButton.BombState.Three:
+                    case MinesweeperButton.BombStates.Three:
                         mb.Text = "3";
                         break;
-                    case (int)MinesweeperButton.BombState.Four:
+                    case MinesweeperButton.BombStates.Four:
                         mb.Text = "4";
                         break;
-                    case (int)MinesweeperButton.BombState.Five:
+                    case MinesweeperButton.BombStates.Five:
                         mb.Text = "5";
                         break;
-                    case (int)MinesweeperButton.BombState.Six:
+                    case MinesweeperButton.BombStates.Six:
                         mb.Text = "6";
                         break;
-                    case (int)MinesweeperButton.BombState.Seven:
+                    case MinesweeperButton.BombStates.Seven:
                         mb.Text = "7";
                         break;
-                    case (int)MinesweeperButton.BombState.Eight:
+                    case MinesweeperButton.BombStates.Eight:
                         mb.Text = "8";
                         break;
-                    case (int)MinesweeperButton.BombState.Bomb:
+                    case MinesweeperButton.BombStates.Bomb:
                         mb.Text = "*";
                         break;
                 }
@@ -229,31 +232,31 @@ namespace Minesweeper
                     switch (count)
                         {
                             case 0:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Empty);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Empty;
                                 break;
                             case 1:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.One);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.One;
                                 break;
                             case 2:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Two);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Two;
                                 break;
                             case 3:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Three);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Three;
                                 break;
                             case 4:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Four);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Four;
                                 break;
                             case 5:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Five);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Five;
                                 break;
                             case 6:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Six);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Six;
                                 break;
                             case 7:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Seven);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Seven;
                                 break;
                             case 8:
-                                gameField[i, j] = ((int)MinesweeperButton.BombState.Eight);
+                                gameField[i, j].BombState = MinesweeperButton.BombStates.Eight;
                                 break;
 
 
@@ -269,7 +272,7 @@ namespace Minesweeper
             if (row < 0 || row >= rowCount || column < 0 || column >= columnCount) {
                 return 0;
             }
-            if (gameField[row, column] == ((int)MinesweeperButton.BombState.Bomb)) {
+            if (gameField[row, column].BombState == MinesweeperButton.BombStates.Bomb) {
                 return 1;
             }
             return 0;
@@ -277,7 +280,6 @@ namespace Minesweeper
 
         private void GenerateBombs(int rowPositionToExclude, int columnPositionToExclude)
         {
-            gameField = new int[rowCount, columnCount];
             int bombsToGenerate = bombCount;
             Random rand = new Random();
             while (bombsToGenerate > 0)
@@ -289,13 +291,13 @@ namespace Minesweeper
                     continue; // we don't want to place a bomb where they've just clicked! :( 
                     // (ps. we also exclude the 8 tiles immediately adjacent so as to give them a completely empty tile to start with)
                 }
-                else if (gameField[possibleRow,possibleColumn] == ((int)MinesweeperButton.BombState.Bomb))
+                else if (gameField[possibleRow,possibleColumn].BombState == MinesweeperButton.BombStates.Bomb)
                 {
                     continue; // bomb here already
                 }
                 else
                 {
-                    gameField[possibleRow, possibleColumn] = ((int)MinesweeperButton.BombState.Bomb);
+                    gameField[possibleRow, possibleColumn].BombState = MinesweeperButton.BombStates.Bomb;
                     bombsToGenerate--;
                 }
 

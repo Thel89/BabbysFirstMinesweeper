@@ -5,13 +5,32 @@ namespace Minesweeper
 {
     class MinesweeperButton : Button
     {
+        public enum BombStates { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
+        public enum FlagStates { Unmarked, Maybe, Flagged };
+        public enum Visibility { Hidden, Exposed };
+
         internal int row;
         internal int column;
+        private BombStates bombState;
         private MinesweeperState gameState;
 
-        public enum BombState { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
-        public enum FlagState { Unmarked, Maybe, Flagged };
-        public enum Visibility { Hidden, Exposed };
+        public BombStates BombState
+        {
+            get
+            {
+                return bombState;
+            }
+
+            set
+            {
+                if (Enum.IsDefined(typeof(BombStates), value)) {
+                    bombState = value;
+                } else
+                {
+                    throw new InvalidOperationException(String.Format("\"{0}\" is not a valid value for BombStates Enum", value));
+                }
+            }
+        }
 
         public MinesweeperButton(int c, int r, MinesweeperState minesweeperState)
         {
