@@ -5,12 +5,13 @@ namespace Minesweeper
 {
     class MinesweeperButton : Button
     {
-        public enum BombStates { Empty, One, Two, Three, Four, Five, Six, Seven, Eight, Bomb };
+        public enum BombStates { Empty = 0, One = 1, Two = 2, Three = 3, Four = 4, Five = 5, Six = 6, Seven = 7, Eight = 8, Bomb };
         public enum FlagStates { Unmarked, Flagged, Maybe };
         public enum Visibility { Hidden, Exposed };
 
         private int row;
         private int column;
+        private bool isExposed;
         private BombStates bombState;
         private FlagStates flagState;
         private MinesweeperState gameState;
@@ -72,6 +73,23 @@ namespace Minesweeper
             }
         }
 
+        public bool IsExposed
+        {
+            get
+            {
+                return isExposed;
+            }
+
+            set
+            {
+                isExposed = value;
+                if (value)
+                {
+                    this.FlatStyle = FlatStyle.Popup;
+                }
+            }
+        }
+
         public MinesweeperButton(int r, int c, MinesweeperState minesweeperState)
         {
             Column = c;
@@ -83,6 +101,7 @@ namespace Minesweeper
             MouseUp += new MouseEventHandler(mineSweeperButton_MouseUp);
             MouseLeave += new EventHandler(mineSweeperButton_MouseLeave);
             this.FlatStyle = FlatStyle.System;
+            isExposed = false;
         }
 
         private void mineSweeperButton_MouseDown(object sender, MouseEventArgs e)

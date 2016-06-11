@@ -62,7 +62,7 @@ namespace Minesweeper
         internal void GameButton_MouseDown(int row, int column, MouseEventArgs e)
         {
             if (isDebug) {
-                Debug.WriteLine("Down at ({0},{1}) - {2}", row, column, e.Button);
+                Debug.WriteLine(String.Format("Down at ({0},{1}) - {2}", row, column, e.Button));
             }
             if (e.Button == MouseButtons.Left)
             {
@@ -80,6 +80,7 @@ namespace Minesweeper
                     both_click = true;
                 }
             }
+            
         }
 
         internal void GameButton_MouseUp(int row, int column, MouseEventArgs e)
@@ -92,6 +93,10 @@ namespace Minesweeper
             {
                 // we've moved, ignore this event
                 return;
+            }
+            if (isDebug)
+            {
+                Debug.WriteLine(" left: {0}, right: {1}, both: {2}", left_down, right_down, both_click);
             }
             if (e.Button == MouseButtons.Left)
             {
@@ -162,7 +167,7 @@ namespace Minesweeper
             {
                 for (int j = 0; j < columnCount; j++)
                 {
-                    if (gameField[i, j].Enabled)
+                    if (!(gameField[i, j].IsExposed))
                     {
                         count++;
                     }
@@ -187,7 +192,7 @@ namespace Minesweeper
             }
             else
             {
-                button.Enabled = false;
+                button.IsExposed = true;
                 updateLabel(button);
                 if (button.BombState == MinesweeperButton.BombStates.Empty)
                 {
@@ -234,7 +239,7 @@ namespace Minesweeper
             }
             foreach(MinesweeperButton b in neighbours)
             {
-                if (b.Enabled)
+                if (!b.IsExposed)
                 {
                     ExposeCell(b);
                 }
@@ -244,7 +249,7 @@ namespace Minesweeper
         internal void RightButtonClick(int row, int column)
         {
             MinesweeperButton button = gameField[row, column];
-            if (button.Enabled)
+            if (!button.IsExposed)
             {
                 switch (button.FlagState)
                 {
@@ -266,7 +271,58 @@ namespace Minesweeper
         }
         internal void TwoButtonClick(int row, int column)
         {
-
+            MessageBox.Show("test!");
+            List<MinesweeperButton> neighbours = new List<MinesweeperButton>();
+            if (row > 0 && column > 0)
+            {
+                neighbours.Add(gameField[row - 1, column - 1]);
+            }
+            if (row > 0)
+            {
+                neighbours.Add(gameField[row - 1, column]);
+            }
+            if (row > 0 && column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row - 1, column + 1]);
+            }
+            if (column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row, column + 1]);
+            }
+            if (row < (rowCount - 1) && column < (columnCount - 1))
+            {
+                neighbours.Add(gameField[row + 1, column + 1]);
+            }
+            if (row < (rowCount - 1))
+            {
+                neighbours.Add(gameField[row + 1, column]);
+            }
+            if (row < (rowCount - 1) && column > 0)
+            {
+                neighbours.Add(gameField[row + 1, column - 1]);
+            }
+            if (column > 0)
+            {
+                neighbours.Add(gameField[row, column - 1]);
+            }
+            int flagCount = 0;
+            foreach (MinesweeperButton b in neighbours)
+            {
+                if (!b.IsExposed && b.FlagState == MinesweeperButton.FlagStates.Flagged)
+                {
+                    flagCount++;
+                }
+            }
+            if (flagCount == ((int)gameField[row, column].BombState))
+            {
+                foreach (MinesweeperButton b in neighbours)
+                {
+                    if (!b.IsExposed && b.FlagState != MinesweeperButton.FlagStates.Flagged)
+                    {
+                        ExposeCell(b);
+                    }
+                }
+            }
         }
 
         private void updateLabel(MinesweeperButton button)
