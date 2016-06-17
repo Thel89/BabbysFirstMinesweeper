@@ -199,6 +199,7 @@ namespace Minesweeper
                     ExposeAdjacentCells(button, button.Row, button.Column);
                 }
             }
+            CheckIfWon();
             debugCheckBox.Focus();
         }
 
@@ -269,6 +270,7 @@ namespace Minesweeper
                 }
             }
         }
+
         internal void TwoButtonClick(int row, int column)
         {
             List<MinesweeperButton> neighbours = new List<MinesweeperButton>();
